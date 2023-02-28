@@ -30,22 +30,31 @@ function RenderLandingPage(props) {
           </h3>
         </div>
       </div>
-
       <div className="graphs-section">
+        {/* make 3 divs each with picture of graph and caption */}
+
         <div className="grant-rates-by-office-graph-container">
-          <img src={GrantRatesByOfficeImg} alt="" class="gr-office-img" />
+          <img
+            src={GrantRatesByOfficeImg}
+            alt="Grant Rates By Office Graph"
+            class="gr-office-img"
+          />
           <p>Search Grant Rates By Office</p>
         </div>
         <div className="grant-rates-by-nationality-container">
           <img
             src={GrantRatesByNationalityImg}
-            alt=""
+            alt="Grant Rates By Nationality Graph"
             class="gr-nationality-img"
           />
           <p>Search Grant Rates By Nationality</p>
         </div>
         <div className="grant-rates-over-time-container">
-          <img src={GrantRatesOverTimeImg} alt="" class="gr-overtime-img" />
+          <img
+            src={GrantRatesOverTimeImg}
+            alt="Grant Rates Over Time"
+            class="gr-overtime-img"
+          />
           <p>Search Grant Rates Over Time</p>
         </div>
       </div>
@@ -58,7 +67,7 @@ function RenderLandingPage(props) {
         >
           View the Data
         </Button>
-
+        {/* wrap button with anchor to download given csv */}
         <a href="https://humanrightsfirst.org/wp-content/uploads/2022/10/COW2021001887-I589Data.csv">
           <div className="read-more-btn">
             <Button
@@ -83,7 +92,7 @@ function RenderLandingPage(props) {
             through a Freedom of Information Act request. You can search for
             information on asylum grant rates by year, nationality, and asylum
             office, visualize the data with charts and heat maps, and download
-            the data set
+            the data set.
           </h3>
         </div>
       </div>
@@ -91,6 +100,7 @@ function RenderLandingPage(props) {
       <div className="bottom-section">
         <h1>Systemic Disparity Insights</h1>
         <div className="data-container">
+          {/*make 3 divs each with h2 and h3*/}
           <div className="first-data-point-container">
             <h2>36%</h2>
             <h3>
@@ -115,6 +125,7 @@ function RenderLandingPage(props) {
             </h3>
           </div>
         </div>
+        {/* wrap button with anchor to open given url */}
         <a
           href="https://humanrightsfirst.org/library/uscis-records-reveal-systemic-disparities-in-asylum-decisions/"
           target="_blank"
