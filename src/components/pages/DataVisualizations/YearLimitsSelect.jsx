@@ -52,8 +52,14 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 function YearLimitsSelect(props) {
-  let { view, office, dispatch, clearQuery, updateStateWithNewData, years } =
-    props;
+  let {
+    view,
+    office,
+    dispatch,
+    clearQuery,
+    updateStateWithNewData,
+    years,
+  } = props;
   // const yearInputsOnChange = (view, office, e) => {
   //   dispatch(
   //     setHeatMapYears(
@@ -98,7 +104,10 @@ function YearLimitsSelect(props) {
       <Form
         form={form}
         name="yearLimitsSelect"
-        initialValues={{ year_start: years[0], year_end: years[1] }}
+        initialValues={{
+          year_start: years[0],
+          year_end: years[1],
+        }}
         onFinish={() => {
           updateStateWithNewData(years, view, office, stateSettingFn);
         }}

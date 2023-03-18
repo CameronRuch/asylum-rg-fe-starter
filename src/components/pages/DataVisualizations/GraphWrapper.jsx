@@ -15,7 +15,7 @@ import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
 const { background_color } = colors;
-const URL = process.env.REACT_APP_API_URI;
+const URL = process.env.REACT_APP_API_URL;
 
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
