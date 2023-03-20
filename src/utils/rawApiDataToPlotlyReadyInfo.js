@@ -186,18 +186,17 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
     switch (view) {
       case 'time-series':
         rowsForTable = [];
-        data.yearResults.sort((a, b) => a.fiscal_year - b.fiscal_year);
-        for (let i = 0; i < data.yearResults.length; i++) {
+        console.log(data.length);
+        data.sort((a, b) => a.fiscal_year - b.fiscal_year);
+        for (let i = 0; i < data.length; i++) {
           if (
-            data.yearResults[i].yearData.filter(
-              dataItem => dataItem.office === office
-            )[0]
+            data[i].yearData.filter(dataItem => dataItem.office === office)[0]
           ) {
-            const officeObj = data.yearResults[i].yearData.filter(
+            const officeObj = data[i].yearData.filter(
               dataItem => dataItem.office === office
             )[0];
             rowItem = {
-              'Fiscal Year': data.yearResults[i].fiscal_year,
+              'Fiscal Year': data[i].fiscal_year,
               'Total Cases': officeObj.totalCases,
               '% Granted': Number(officeObj.granted).toFixed(2),
               '% Admin Close / Dismissal': Number(
