@@ -13,9 +13,10 @@ import { resetVisualizationQuery } from '../../../state/actionCreators';
 // import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
+// import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 const { background_color } = colors;
-const URL = process.env.REACT_APP_API_URL;
+const URL = 'https://hrf-asylum-be-b.herokuapp.com/cases';
 
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
@@ -49,6 +50,19 @@ function GraphWrapper(props) {
         break;
       default:
         break;
+    }
+  }
+
+  function axiosDataToArray(responseData) {
+    if (Array.isArray(responseData)) {
+      // The response data is already an array, so just return it
+      return responseData;
+    } else if (responseData && typeof responseData === 'object') {
+      // The response data is an object, so convert it to an array
+      return Object.values(responseData);
+    } else {
+      // Invalid response data, return an empty array
+      return [];
     }
   }
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
@@ -86,7 +100,9 @@ function GraphWrapper(props) {
           },
         })
         .then(result => {
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          const myArray = axiosDataToArray(result.data.yearResults);
+          console.log(myArray);
+          stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
           console.error(err);
@@ -102,7 +118,9 @@ function GraphWrapper(props) {
           },
         })
         .then(result => {
-          stateSettingCallback(view, office, result.data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          // console.log(result.data['yearResults']);
+          const myArray = axiosDataToArray(result.data.yearResults);
+          stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
         })
         .catch(err => {
           console.error(err);
