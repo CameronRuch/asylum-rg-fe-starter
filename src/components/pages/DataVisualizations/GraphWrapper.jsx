@@ -21,6 +21,7 @@ const URL = 'https://hrf-asylum-be-b.herokuapp.com/cases';
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
+  let summary = '';
   if (!view) {
     set_view('time-series');
     view = 'time-series';
@@ -30,12 +31,15 @@ function GraphWrapper(props) {
     switch (view) {
       case 'time-series':
         map_to_render = <TimeSeriesAll />;
+        summary = 'fiscalSummary';
         break;
       case 'office-heat-map':
         map_to_render = <OfficeHeatMap />;
+        summary = 'fiscalSummary';
         break;
       case 'citizenship':
         map_to_render = <CitizenshipMapAll />;
+        summary = 'citizenshipSummary';
         break;
       default:
         break;
@@ -44,9 +48,11 @@ function GraphWrapper(props) {
     switch (view) {
       case 'time-series':
         map_to_render = <TimeSeriesSingleOffice office={office} />;
+        summary = 'fiscalSummary';
         break;
       case 'citizenship':
         map_to_render = <CitizenshipMapSingleOffice office={office} />;
+        summary = 'citizenshipSummary';
         break;
       default:
         break;
@@ -54,73 +60,63 @@ function GraphWrapper(props) {
   }
 
   function axiosDataToArray(responseData) {
-    if (Array.isArray(responseData)) {
-      // The response data is already an array, so just return it
-      return responseData;
-    } else if (responseData && typeof responseData === 'object') {
-      // The response data is an object, so convert it to an array
-      return Object.values(responseData);
-    } else {
-      // Invalid response data, return an empty array
-      return [];
+    if (summary === 'fiscalSummary') {
+      if (Array.isArray(responseData)) {
+        // The response data is already an array, so just return it
+        return responseData;
+      } else if (responseData && typeof responseData === 'object') {
+        // The response data is an object, so convert it to an array
+        return Object.values(responseData);
+      } else {
+        // Invalid response data, return an empty array
+        return responseData;
+      }
     }
   }
-  function updateStateWithNewData(years, view, office, stateSettingCallback) {
-    {
-      /*
-          _                                                                             _
-        |                                                                                 |
-        |   Example request for once the `/summary` endpoint is up and running:           |
-        |                                                                                 |
-        |     `${url}/summary?to=2022&from=2015&office=ZLA`                               |
-        |                                                                                 |
-        |     so in axios we will say:                                                    |
-        |                                                                                 |     
-        |       axios.get(`${url}/summary`, {                                             |
-        |         params: {                                                               |
-        |           from: <year_start>,                                                   |
-        |           to: <year_end>,                                                       |
-        |           office: <office>,       [ <-- this one is optional! when    ]         |
-        |         },                        [ querying by `all offices` there's ]         |
-        |       })                          [ no `office` param in the query    ]         |
-        |                                                                                 |
-          _                                                                             _
-                                   -- Mack 
-    
-        */
-    }
 
-    if (office === 'all' || !office) {
-      axios
-        .get(`${URL}/fiscalSummary`, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-          },
-        })
-        .then(result => {
-          const myArray = axiosDataToArray(result.data.yearResults);
-          console.log(myArray);
-          stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+  function updateStateWithNewData(years, view, office, stateSettingCallback) {
+    if (summary === 'fiscalSummary') {
+      if (office === 'all' || !office) {
+        axios
+          .get(`${URL}/fiscalSummary`, {
+            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+            params: {
+              from: years[0],
+              to: years[1],
+            },
+          })
+          .then(result => {
+            console.log(result.data);
+            const myArray = axiosDataToArray(result.data.yearResults);
+            stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      } else {
+        axios
+          .get(`${URL}/fiscalSummary`, {
+            // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
+            params: {
+              from: years[0],
+              to: years[1],
+              office: office,
+            },
+          })
+          .then(result => {
+            console.log(result.data);
+            const myArray = axiosDataToArray(result.data.yearResults);
+            stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
     } else {
       axios
-        .get(`${URL}/fiscalSummary`, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-            office: office,
-          },
-        })
+        .get(`${URL}/citizenshipSummary`)
         .then(result => {
-          // console.log(result.data['yearResults']);
-          const myArray = axiosDataToArray(result.data.yearResults);
-          stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
+          stateSettingCallback(view, office, result.data);
         })
         .catch(err => {
           console.error(err);
@@ -159,6 +155,7 @@ function GraphWrapper(props) {
           office={office}
           clearQuery={clearQuery}
           updateStateWithNewData={updateStateWithNewData}
+          summary={summary}
         />
       </div>
     </div>
