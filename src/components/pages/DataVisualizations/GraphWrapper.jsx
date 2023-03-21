@@ -86,7 +86,6 @@ function GraphWrapper(props) {
             },
           })
           .then(result => {
-            console.log(result.data);
             const myArray = axiosDataToArray(result.data.yearResults);
             stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
           })
@@ -104,7 +103,6 @@ function GraphWrapper(props) {
             },
           })
           .then(result => {
-            console.log(result.data);
             const myArray = axiosDataToArray(result.data.yearResults);
             stateSettingCallback(view, office, myArray); // <-- `test_data` here can be simply replaced by `result.data` in prod!
           })

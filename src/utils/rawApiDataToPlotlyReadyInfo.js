@@ -15,7 +15,6 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
   let rowsForTable;
 
   let yearMinMax = []; //variable to set minYear and MaxYear
-  console.log(data, 'data taken from');
   for (let yearResults of data) {
     yearMinMax.push(yearResults['fiscal_year']);
   }
@@ -160,7 +159,6 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
 
       case 'citizenship':
         rowsForTable = [];
-        console.log(data);
         for (let item of data) {
           rowItem = {
             Citizenship: item.citizenship,
@@ -220,8 +218,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
 
       case 'citizenship':
         rowsForTable = [];
-        console.log(data);
-        for (let item of data.citizenshipResults) {
+        for (let item of data) {
           rowItem = {
             Citizenship: item.citizenship,
             'Total Cases': item.totalCases,
@@ -235,7 +232,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
           countries: [],
           countriesPercentGranteds: [],
         };
-        for (let country of data['citizenshipResults']) {
+        for (let country of data) {
           countryGrantRateObj['countries'].push(country['citizenship']);
           countryGrantRateObj['countriesPercentGranteds'].push(
             country['granted']
