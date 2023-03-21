@@ -73,9 +73,13 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
             'Total Cases': yearResults.totalCases,
             '% Granted': Number(yearResults.granted).toFixed(2),
             '% Admin Close / Dismissal': Number(
-              yearResults.adminClosed
+              (yearResults.adminClosed / yearResults.totalCases) * 10
             ).toFixed(2),
-            '% Denied': Number(yearResults.denied).toFixed(2),
+            '% Denied': Number(
+              (yearResults.denied /
+                (yearResults.totalCases - yearResults.adminClosed)) *
+                100
+            ).toFixed(2),
           };
           rowsForAllDisplay.push(rowItem);
         }
@@ -203,9 +207,13 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data, summary) => {
               'Total Cases': officeObj.totalCases,
               '% Granted': Number(officeObj.granted).toFixed(2),
               '% Admin Close / Dismissal': Number(
-                officeObj.adminClosed
+                (officeObj.adminClosed / officeObj.totalCases) * 10
               ).toFixed(2),
-              '% Denied': Number(officeObj.denied).toFixed(2),
+              '% Denied': Number(
+                (officeObj.denied /
+                  (officeObj.totalCases - officeObj.adminClosed)) *
+                  100
+              ).toFixed(2),
             };
             rowsForTable.push(rowItem);
           }
