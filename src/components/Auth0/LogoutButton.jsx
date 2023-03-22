@@ -1,11 +1,16 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import Button from '@material-ui/core/Button';
 
 const LogoutButton = () => {
-  const { logout } = useAuth0();
+  const { logout, isAuthenticated } = useAuth0();
 
-  return <Button onClick={() => logout()}>Log Out</Button>;
+  return (
+    isAuthenticated && (
+      <a style={{ color: '#E2F0F7' }} onClick={() => logout()}>
+        Log Out
+      </a>
+    )
+  );
 };
 
 export default LogoutButton;
